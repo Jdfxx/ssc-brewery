@@ -28,4 +28,5 @@ public class BeerRestControllerIT extends BaseIt {
                 .andExpect(status().isOk());
     }
 
+
 }
