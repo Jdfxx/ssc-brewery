@@ -23,7 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/beers/find"
                     )
                             .permitAll()
-                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll();
+                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
+                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll();
                 })
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
