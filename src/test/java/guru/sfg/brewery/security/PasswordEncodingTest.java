@@ -1,9 +1,12 @@
 package guru.sfg.brewery.security;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PasswordEncodingTest {
     private static final String PASSWORD = "password";
@@ -13,6 +16,15 @@ public class PasswordEncodingTest {
     void noop() {
         PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
         System.out.println(encoder.encode(PASSWORD));
+    }
+
+    @Test
+    void ldap() {
+        PasswordEncoder encoder = new LdapShaPasswordEncoder();
+        System.out.println(encoder.encode(PASSWORD));
+        System.out.println(encoder.encode(PASSWORD));
+
+        assertTrue(encoder.matches(PASSWORD, encoder.encode(PASSWORD)));
     }
 
 
