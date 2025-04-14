@@ -1,10 +1,20 @@
 package guru.sfg.brewery.security;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 public class PasswordEncodingTest {
     private static final String PASSWORD = "password";
+
+
+    @Test
+    void noop() {
+        PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
+        System.out.println(encoder.encode(PASSWORD));
+    }
+
 
     @Test
     void hashingExample() {
