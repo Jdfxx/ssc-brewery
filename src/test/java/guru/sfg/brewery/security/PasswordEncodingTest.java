@@ -1,9 +1,11 @@
 package guru.sfg.brewery.security;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,5 +39,19 @@ public class PasswordEncodingTest {
 
         System.out.println(DigestUtils.md5Digest(salted.getBytes()));
         System.out.println(DigestUtils.md5Digest(salted.getBytes()));
+    }
+
+    @Test
+    void testsha256() {
+        PasswordEncoder encoder = new StandardPasswordEncoder();
+        System.out.println(encoder.encode(PASSWORD));
+        System.out.println(encoder.encode(PASSWORD));
+    }
+
+    @Test
+    void testBCrypt() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.println(encoder.encode(PASSWORD));
+        System.out.println(encoder.encode(PASSWORD));
     }
 }
