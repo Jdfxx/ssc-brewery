@@ -1,9 +1,8 @@
 package guru.sfg.brewery.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -78,7 +77,12 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
             this.logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult);
         }
         SecurityContextHolder.getContext().setAuthentication(authResult);
+    }
 
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        SecurityContextHolder.clearContext();
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 
     private String getSecret(HttpServletRequest httpServletRequest) {
