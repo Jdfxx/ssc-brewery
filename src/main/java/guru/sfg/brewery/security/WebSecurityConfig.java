@@ -51,6 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             .permitAll()
                             .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
                             .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
+                            .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
+                            .mvcMatchers("/brewery/breweries")
+                                .hasAnyRole("ADMIN", "CUSTOMER")
+                            .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries")
+                                .hasAnyRole("ADMIN", "CUSTOMER")
                             .antMatchers("/h2-console/**").permitAll();
                 })
                 .authorizeRequests().anyRequest().authenticated()
