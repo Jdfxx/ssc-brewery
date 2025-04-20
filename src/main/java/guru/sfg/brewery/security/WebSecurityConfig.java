@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
@@ -42,19 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/login",
                             "/resources/**"
                     )
-                            .permitAll()
-                            .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                            .mvcMatchers("/brewery/breweries")
-                                .hasAnyRole("ADMIN", "CUSTOMER")
-                            .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries")
-                                .hasAnyRole("ADMIN", "CUSTOMER")
-                            .antMatchers("/h2-console/**").permitAll()
-                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**")
-                            .hasAnyRole("ADMIN", "CUSTOMER", "USER")
-                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}")
-                            .hasAnyRole("ADMIN", "CUSTOMER", "USER")
-                            .mvcMatchers("/beers/find", "/beers/{beerId}")
-                            .hasAnyRole("ADMIN", "CUSTOMER", "USER");
+                            .permitAll();
 
                 })
                 .authorizeRequests().anyRequest().authenticated()
