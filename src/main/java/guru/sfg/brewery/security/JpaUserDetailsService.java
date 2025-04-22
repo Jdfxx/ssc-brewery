@@ -27,22 +27,8 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(userName).orElseThrow(() ->
+        return userRepository.findByUsername(userName).orElseThrow(() ->
                 new UsernameNotFoundException("Username: " + userName + " not found"));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(),
-                user.getAccountNonLocked(), convertToSpringAuthorities(user.getAuthorities()));
-    }
-
-    private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Set<Authority> authorities) {
-        if (authorities != null && !authorities.isEmpty()){
-            return authorities.stream()
-                    .map(Authority::getPermission)
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toSet());
-        } else {
-            return new HashSet<>();
-        }
     }
 }
