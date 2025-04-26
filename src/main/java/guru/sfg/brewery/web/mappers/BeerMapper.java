@@ -22,7 +22,7 @@ import guru.sfg.brewery.web.model.BeerDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = DateMapper.class)
+@Mapper(uses = DateMapper.class, componentModel = "spring")
 @DecoratedWith(BeerMapperDecorator.class)
 public interface BeerMapper {
 
