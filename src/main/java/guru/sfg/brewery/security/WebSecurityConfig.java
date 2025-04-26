@@ -3,6 +3,7 @@ package guru.sfg.brewery.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,6 +20,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -66,7 +69,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             .logoutSuccessUrl("/?logout")
                             .permitAll();
                 })
-                .httpBasic();
+                .httpBasic()
+                .and().rememberMe()
+                .key("sfg-key")
+                .userDetailsService(userDetailsService);
 
         http.headers().frameOptions().sameOrigin();
     }
