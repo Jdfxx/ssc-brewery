@@ -1,6 +1,7 @@
 package guru.sfg.brewery.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -21,7 +23,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
     private final UserDetailsService userDetailsService;
+    @Autowired
+    private final PersistentTokenRepository persistentTokenRepository;;
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -71,8 +76,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .httpBasic()
                 .and().rememberMe()
-                .key("sfg-key")
-                .userDetailsService(userDetailsService);
+//                .key("sfg-key")
+               .userDetailsService(userDetailsService)
+               .tokenRepository(persistentTokenRepository);
 
         http.headers().frameOptions().sameOrigin();
     }
