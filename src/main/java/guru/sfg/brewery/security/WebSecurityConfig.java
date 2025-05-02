@@ -2,7 +2,6 @@ package guru.sfg.brewery.security;
 
 import guru.sfg.brewery.security.google.Google2FaFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,17 +11,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -54,11 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authorizeRequests -> {
                     authorizeRequests
                             .antMatchers(
-                            "/",
-                            "/webjars/**",
-                            "/login",
-                            "/resources/**"
-                    )
+                                    "/",
+                                    "/webjars/**",
+                                    "/login",
+                                    "/resources/**"
+                            )
                             .permitAll();
 
                 })
@@ -81,11 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and().rememberMe()
 //                .key("sfg-key")
-               .userDetailsService(userDetailsService)
-               .tokenRepository(persistentTokenRepository);
+                .userDetailsService(userDetailsService)
+                .tokenRepository(persistentTokenRepository);
 
         http.headers().frameOptions().sameOrigin();
     }
+}
 
 //    @Override
 //    @Bean
@@ -112,8 +110,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-}
+

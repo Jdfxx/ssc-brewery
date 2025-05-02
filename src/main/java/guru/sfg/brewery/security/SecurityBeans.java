@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class SecurityBeans {
 
     @Bean
-    public GoogleAuthenticator googleAuthenticator(ICredentialRepository credentialRepository){
+    public GoogleAuthenticator googleAuthenticator(ICredentialRepository credentialRepository) {
         GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder configBuilder
                 = new GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder();
 
@@ -34,15 +36,20 @@ public class SecurityBeans {
     }
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(DataSource dataSource){
+    public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
 
     @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
+    public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 }
+
